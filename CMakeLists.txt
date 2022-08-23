@@ -14,8 +14,15 @@ set_target_properties(
     SUFFIX ".tsk"
 )
 
+target_sources(subbandcoding
+  PRIVATE
+    wavelet.cpp
+    matrix.cpp
+)
+
 target_link_libraries(subbandcoding PUBLIC easybmplib)
 target_include_directories(subbandcoding PUBLIC
   "${PROJECT_BINARY_DIR}"
+  "${PROJECT_SOURCE_DIR}"
   "${PROJECT_SOURCE_DIR}/EasyBMP"
 )
