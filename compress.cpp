@@ -17,6 +17,8 @@ using std::ofstream;
 using std::ios;
 using std::fixed;
 using std::setprecision;
+using std::min;
+using std::max;
 
 void write(const vector<bool>& data, ofstream& file) {
   assert(data.size() % 8 == 0);
@@ -136,7 +138,7 @@ int uncompress(const string& inputFilename, const string& outputFilename) {
   for (int i = 0; i < n; i++)
     for (int j = 0; j < n; j++) {
       double val = uncompressed(i, j);
-      BYTE color = std::min(255, std::max(0, (int)val));
+      BYTE color = min(255, max(0, (int)val));
       image.SetPixel(j, i, RGBApixel{ color, color, color, 0 });
     }
   image.WriteToFile(outputFilename.c_str());
@@ -144,7 +146,7 @@ int uncompress(const string& inputFilename, const string& outputFilename) {
   return 0;
 }
 
-int compare(const std::string& filename1, const std::string& filename2) {
+int compare(const string& filename1, const string& filename2) {
   BMP image1, image2;
   if (!image1.ReadFromFile(filename1.c_str()) || !image2.ReadFromFile(filename2.c_str())) {
     return 2;

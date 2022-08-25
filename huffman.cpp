@@ -138,24 +138,8 @@ vector<bool> huffmanEncode(const vector<BYTE>& data) {
   return output;
 }
 
-bool getBit(const std::vector<BYTE>& data, int index) {
-  return (data[index / 8] >> (index & 7)) & 1;
-}
 
-vector<BYTE> huffmanDecode(const std::vector<BYTE>& data, int bytes) {
-  vector<bool> bits(data.size() * 8);
-  for (int i = 0; i < data.size(); i++) {
-    int x = data[i];
-    for (int b = 0; b < 8; b++) {
-      bits[8 * i + b] = x & 1;
-      x >>= 1;
-    }
-  }
-
-  return huffmanDecode(bits, bytes);
-}
-
-std::vector<BYTE> huffmanDecode(const std::vector<bool>& bits, int bytes) {
+vector<BYTE> huffmanDecode(const vector<bool>& bits, int bytes) {
   vector<bool>::const_iterator it = bits.cbegin();
   Node* root = buildTree(it);
 
@@ -174,4 +158,17 @@ std::vector<BYTE> huffmanDecode(const std::vector<bool>& bits, int bytes) {
   }
 
   return output;
+}
+
+vector<BYTE> huffmanDecode(const vector<BYTE>& data, int bytes) {
+  vector<bool> bits(data.size() * 8);
+  for (int i = 0; i < data.size(); i++) {
+    int x = data[i];
+    for (int b = 0; b < 8; b++) {
+      bits[8 * i + b] = x & 1;
+      x >>= 1;
+    }
+  }
+
+  return huffmanDecode(bits, bytes);
 }

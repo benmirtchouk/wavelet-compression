@@ -85,13 +85,6 @@ pair<vector<int>, vector<int>> lloyd_quantize(const vector<int>& x, int n, doubl
   while (true) {
     compute_boundaries(y, b);
     long long D2 = compute_distortion(x, b, y);
-    cout << "b: ";
-    for(int x : b) cout << x << " ";
-    cout << "\n";
-    cout << "y: ";
-    for(int x : y) cout << x << " ";
-    cout << "\n";
-    cout << "D: " << setprecision(2) << 1.0 * D2 / x.size() << "\n\n";
 
     if (abs(D - D2) < e * x.size()) break;
     D = D2;
