@@ -3,9 +3,6 @@
 
 #include <matrix.h>
 
-#include <vector>
-#include <utility>
-
 void dwt(const Span& x, Span& y, int n);
 void idwt(const Span& y, Span& x, int n);
 void dwt2(const Matrix& x, Matrix& y, int n);

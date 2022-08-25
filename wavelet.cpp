@@ -1,7 +1,9 @@
 #include <wavelet.h>
+
+#include <vector>
 #include <cassert>
 
-using namespace std;
+using std::vector;
 
 // DAUBECHIES2
 const vector<double> DB2_LPF_D = { -0.12940952255092145, 0.22414386804185735, 0.836516303737469, 0.48296291314469025 };
@@ -10,10 +12,10 @@ const vector<double> DB2_LPF_R = { 0.48296291314469025, 0.836516303737469, 0.224
 const vector<double> DB2_HPF_R = { -0.12940952255092145, -0.22414386804185735, 0.836516303737469, -0.48296291314469025 };
 
 // DAUBECHIES1
-// const vector<double> DB1_LPF_D = { 0.7071067811865476, 0.7071067811865476 };
-// const vector<double> DB1_HPF_D = { -0.7071067811865476, 0.7071067811865476 };
-// const vector<double> DB1_LPF_R = { 0.7071067811865476, 0.7071067811865476 };
-// const vector<double> DB1_HPF_R = { 0.7071067811865476, -0.7071067811865476 };
+const vector<double> DB1_LPF_D = { 0.7071067811865476, 0.7071067811865476 };
+const vector<double> DB1_HPF_D = { -0.7071067811865476, 0.7071067811865476 };
+const vector<double> DB1_LPF_R = { 0.7071067811865476, 0.7071067811865476 };
+const vector<double> DB1_HPF_R = { 0.7071067811865476, -0.7071067811865476 };
 
 vector<double> convolve(const Span& x, const vector<double>& h, int n) {
   int m = h.size();
@@ -35,8 +37,8 @@ vector<double> convolve(const Span& x, const vector<double>& h, int n) {
 // Discrete wavelet transform (1-D)
 void dwt(const Span& x, Span& y, int n) {
   assert(n % 2 == 0);
-  vector<double> lo = convolve(x, DB2_LPF_D, n);
-  vector<double> hi = convolve(x, DB2_HPF_D, n);
+  vector<double> lo = convolve(x, DB1_LPF_D, n);
+  vector<double> hi = convolve(x, DB1_HPF_D, n);
 
   for (int i = 0; i < n / 2; i++) {
     y(i) = lo[i * 2];
@@ -51,8 +53,8 @@ void idwt(const Span& y, Span& x, int n) {
   const Span yL = const_cast<Span&>(y).subspan(0, 2);
   const Span yH = const_cast<Span&>(y).subspan(n / 2, 2);
 
-  vector<double> lo = convolve(yL, DB2_LPF_R, n);
-  vector<double> hi = convolve(yH, DB2_HPF_R, n);
+  vector<double> lo = convolve(yL, DB1_LPF_R, n);
+  vector<double> hi = convolve(yH, DB1_HPF_R, n);
 
   for (int i = 0; i < n; i++) {
     x((i + n + 1) % n) = lo[i] + hi[i];

@@ -25,34 +25,6 @@ const Span Matrix::getRow(int i) const { return Span(const_cast<Matrix*>(this), 
 Span Matrix::getCol(int i) { return Span(this, i, false); }
 const Span Matrix::getCol(int i) const { return Span(const_cast<Matrix*>(this), i, false); }
 
-BMP Matrix::toBmp(bool scale) const {
-  int height = d_data.size(), width = d_data[0].size();
-
-  BMP output;
-  output.SetSize(width, height);
-  output.SetBitDepth(24);
-
-  double mn = (*this)(0, 0);
-  double mx = mn;
-
-  for (int i = 0; i < height; i++)
-    for (int j = 0; j < width; j++) {
-      mn = std::min(mn, (*this)(i, j));
-      mx = std::max(mx, (*this)(i, j));
-    }
-
-  for (int i = 0; i < height; i++)
-    for (int j = 0; j < width; j++) {
-      double val = (*this)(i, j);
-      if (scale) val = (val - mn) * 255 / (mx - mn);
-
-      unsigned char color = std::min(255, std::max(0, (int)val));
-      output.SetPixel(j, i, RGBApixel{ color, color, color, 0 });
-    }
-
-  return output;
-}
-
 Span::Span(Matrix* matrix, int index, bool isRow)
   : d_matrix(matrix), d_index(index), d_isRow(isRow)
   , d_offset(0), d_upsample(1) {}

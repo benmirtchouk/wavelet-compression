@@ -18,6 +18,9 @@ target_sources(subbandcoding
   PRIVATE
     wavelet.cpp
     matrix.cpp
+    quantization.cpp
+    compress.cpp
+    huffman.cpp
 )
 
 target_link_libraries(subbandcoding PUBLIC easybmplib)
